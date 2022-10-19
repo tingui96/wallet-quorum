@@ -2,7 +2,7 @@ import { AlertIcon, Box, Stack,
      Text, Alert, InputGroup,
       Input, InputRightElement, Button,
        FormLabel,
-       FormControl, useToast, InputRightAddon, useEditableStyles
+       FormControl, useToast, InputRightAddon
 } from "@chakra-ui/react";
 import React,{useState} from "react";
 import { saveAs } from "file-saver";

@@ -5,7 +5,7 @@ import {
     Text,
     Button,
     useToast,
-    FormControl,FormLabel,FormHelperText,FormErrorMessage,
+    FormControl,FormLabel,FormHelperText,
     Input,InputGroup,InputRightElement, Divider
     
 } from "@chakra-ui/react"; 
@@ -105,7 +105,7 @@ const Setup = ({setSecret, setPublicKey, setHasSaved}) => {
      
     return(
         <div>
-            <Heading>Bienvenido a tu wallet</Heading>            
+            <Heading>Bienvenido a tu Billetera</Heading>            
             <Text fontSize="xl">Crea tu cuenta de forma rapida y segura</Text>
             <Button size="lg" colorScheme="blue" 
             mt={5} onClick={createAccount}>Crear Cuenta</Button>
