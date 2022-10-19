@@ -1,4 +1,4 @@
-import {Box,Button, Image} from "@chakra-ui/react";
+import {Box} from "@chakra-ui/react";
 import Views from "./views";
 
 function App() {
@@ -7,7 +7,7 @@ function App() {
         <Box
           display="flex" 
           alignItems="center"
-          justifyCenter="center"
+          justifyContent="center"
           flexDirection="column"
           padding={30}>
             <Views/>          

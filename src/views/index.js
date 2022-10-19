@@ -8,13 +8,13 @@ const Views = () => {
     //variables para guardar las Llaves
     const [secret, setSecret] = useState(localStorage.getItem('secret'));
     const [publicKey, setPublicKey] = useState(localStorage.getItem('publicKey'));
-    const [hasCopied, setHasCopied] = useState(!!localStorage.getItem('hasCopied'));
+    const [hasSaved, setHasSaved] = useState(!!localStorage.getItem('hasSaved'));
 
     //funcion para resetear la cuenta
     const resetAccount = () => {
         setSecret('');
         setPublicKey('');
-        setHasCopied(false);
+        setHasSaved(false);
         localStorage.clear();
         
     }
@@ -22,11 +22,11 @@ const Views = () => {
     //Condiciones de navegacion
     if(!secret && !publicKey)
     {
-        return <Setup setSecret={setSecret} setPublicKey ={setPublicKey} />;
+        return <Setup setSecret={setSecret} setPublicKey ={setPublicKey} setHasSaved={setHasSaved}/>;
     }
-    else if(!hasCopied)
+    else if(!hasSaved)
     {
-        return <Warning secret={secret} resetAccount={resetAccount} setHasCopied={setHasCopied} />;
+        return <Warning secret={secret} resetAccount={resetAccount} setHasSaved={setHasSaved} />;
     }
     else
     {

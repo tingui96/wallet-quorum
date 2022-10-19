@@ -4,13 +4,14 @@ import {
     Heading,
     Text,
     Button,
+    useToast,
+    FormControl,FormLabel,FormHelperText,FormErrorMessage,
+    Input,InputGroup,InputRightElement, Divider
+    
 } from "@chakra-ui/react"; 
-import Load from "./load";
 
-
-const Setup = ({setSecret, setPublicKey}) => {
-
-    const crateAccount = () => {
+const Setup = ({setSecret, setPublicKey, setHasSaved}) => {
+    const createAccount = () => {
         const Web3 = require('web3');
         const web3 = new Web3();
         const string = web3.utils.sha3(
@@ -27,33 +28,120 @@ const Setup = ({setSecret, setPublicKey}) => {
         
     };
 
-    const goImport = () => {
-        return(
-        <Load setSecret={setSecret} setPublicKey={setPublicKey}/>)
+    const toast = useToast();
+    const [encryptText, setEncryptText] = useState("");
+    const [password, setPassword] = useState('');
+
+    const handlePasswordChange = (event) => {
+        setPassword(event.target.value);
     };
 
-       
-    
-    
+    const readFile = (e) => {
+        const file = e.target.files[0];
+        if(!file) return;
+        const fileReader = new FileReader();
+        fileReader.readAsText(file);
 
+        fileReader.onload = () => {            
+            setEncryptText(fileReader.result);
+        };
+    }
+
+    const importAccount = (event) => {
+
+        if(password.length>7)
+        {
+            if(encryptText==="")
+            { toast({
+                    title: 'Advertencia',
+                    description: "Debe elegir algun archivo",
+                    status: 'info',
+                    duration: 9000,
+                    isClosable: true
+                })
+            }
+            else
+            {
+                const Web3 = require('web3');
+                const web3 = new Web3();
+                try{
+                    const account = web3.eth.accounts.decrypt(encryptText,password);
+                    setSecret(account.privateKey);
+                    setPublicKey(account.address);
+                    setHasSaved(true);
+                    localStorage.setItem('hasSaved',true);
+                    localStorage.setItem('publicKey', account.address);
+                    localStorage.setItem('secret',account.privateKey);
+                }
+                catch{
+                    toast({
+                        title: 'Error',
+                        description: "La contraseña para esa llave privada no es correcta",
+                        status: 'error',
+                        duration: 9000,
+                        isClosable: true
+                    })
+                }               
+            }
+        }
+        else
+        {
+            toast({
+                title: 'Error',
+                description: "La contraseña debe ser mayor de 8 caracteres.",
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+              })
+        }
+
+    };   
+   
+    const [showImport,setShowImport] = useState(false);
+    const handleClickImport = () => setShowImport(true);
+    
+    const [show, setShow] = useState(false);
+    const handleClick = () => setShow(!show);  
+     
     return(
         <div>
             <Heading>Bienvenido a tu wallet</Heading>            
             <Text fontSize="xl">Crea tu cuenta de forma rapida y segura</Text>
             <Button size="lg" colorScheme="blue" 
-            mt={10} onClick={crateAccount}>Crear Cuenta</Button>
-            <Text mt={10}>O bien, si ya tienes una cuenta, importala</Text>
-            {/*<InputGroup marginTop={5}>
-                <Input placeholder="Ingresa tu llave privada" 
-                roundedRight={0} 
-                value={secretToImport} 
-                onChange={handleSecretChange}/>
-                <Button colorScheme="green" onClick={importAccount}>Importar</Button>
-    </InputGroup>*/}
-            <Button mt={5} aligment="center" colorScheme="green" onClick={goImport}>Importar </Button>
+            mt={5} onClick={createAccount}>Crear Cuenta</Button>
+
+            <Text mt={5}>O bien, si ya tienes una cuenta, importala</Text>                        
+            <Button mt={5} aligment="center" colorScheme="green"
+                hidden={showImport} onClick={handleClickImport} >Importar </Button>
+            <Divider orientation='horizontal' />
+
+            <FormControl hidden={!showImport} isRequired>
+                <FormLabel mt={5}>Importar llave privada</FormLabel> 
+                <Input type="file" multiple={false} onChange={ readFile }/>
+            </FormControl>
+
+            <FormControl hidden={!showImport} isRequired>
+                <FormLabel mt={3}>Contraseña para desencriptar archivo.</FormLabel>
+                <InputGroup size='md'>
+                    <Input pr='4.5rem' type={show ? 'text' : 'password'} 
+                        placeholder='Enter password' onChange={handlePasswordChange}/>
+                    <InputRightElement width='4.5rem'>
+                        <Button h='1.75rem' size='sm' onClick={handleClick}>
+                         {show ? 'Hide' : 'Show'}
+                        </Button>
+                    </InputRightElement>
+                </InputGroup>
+                <FormHelperText>Nunca compartas la llave privada.</FormHelperText>
+                <Button mt={5} aligment="center" colorScheme="green"
+                    onClick={importAccount}>Importar </Button>
+            </FormControl>
+            
         </div>
             
     );
 
 };
 export default Setup;
+
+
+
