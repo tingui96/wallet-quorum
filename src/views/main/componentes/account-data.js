@@ -1,25 +1,49 @@
-import React from "react";
+import React,{useState} from "react";
 import {
     Text,InputGroup,
     Input,InputRightElement,
     InputLeftAddon,InputRightAddon,
-    Button,useClipboard
+    Button,useDisclosure,
+    Modal,ModalOverlay,ModalFooter,ModalHeader,ModalBody, ModalCloseButton,ModalContent
 } from '@chakra-ui/react'
+import QRCode from "react-qr-code";
+import TokenList from "./tokenList";
 
 const AccountData = ({publicKey}) => {
-    const {onCopy,hasCopied} = useClipboard(publicKey)
+
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    
+          
     return (
         <>
-        <Text textAlign="center" fontSize="xl" >Cuenta</Text>
-        <InputGroup>
-            <Input readOnly pr="4.5rem" fontSize="sm" value={publicKey}/>
-            <InputRightElement width="4.5rem">
-                <Button onClick={onCopy} h="1.75rem" size="sm">
-                    {!hasCopied ? 'Copiar':'Copiado'}
-                </Button>
+        <InputGroup alignItems="center">
+            <Text textAlign="center" width=" 15rem" as="b" fontSize="xl">
+                Datos de la Cuenta 
+            </Text>
+            <InputRightElement width="7rem">
+                <Button h="1.75rem"  colorScheme="telegram" size="sm"
+                    onClick={onOpen}>Recibir</Button>
+                <Modal isCentered isOpen={isOpen} onClose={onClose}>
+                  <ModalContent>
+                    <ModalHeader>Escanee este codigo para recibir</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody isCentered>
+                        <InputGroup marginLeft={10}>
+                            <QRCode value={publicKey} size={256} bgColor="#282c34" fgColor="#fff" level="H" />
+                        </InputGroup>
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button onClick={onClose}>Close</Button>
+                    </ModalFooter>
+                  </ModalContent>
+                </Modal>
             </InputRightElement>
         </InputGroup>
-        <Text textAlign="center" fontSize="xl">Balance</Text>
+        <InputGroup>
+            <TokenList/>
+
+        </InputGroup>
+        
         </>
     );
 };

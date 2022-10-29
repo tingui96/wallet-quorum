@@ -14,7 +14,7 @@ const Main = ({publicKey, resetAccount}) => {
                   {/*Balance */}
                   <Divider my={10}/>
                   <Box display="flex" justifyContent="space-between" alignItems="center">
-                    <Text textAlign="center">Cuenta:</Text>
+                    <Text textAlign="center"> </Text>
                     <Button variant="outline" color="red"
                     onClick={resetAccount}>Cerrar cuenta</Button>
                   </Box>
