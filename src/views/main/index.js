@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import AccountData from "./componentes/account-data"
 import { Button,Box,Stack,Divider,Text } from "@chakra-ui/react";
 
 const Main = ({publicKey, resetAccount}) => {
@@ -8,6 +9,7 @@ const Main = ({publicKey, resetAccount}) => {
                 maxWidth="500px" borderWidth="1px" p={6}>
                 <Stack width="100%" maxWidth="500px" justifyContent="center">
                   {/*Datos de la cuenta*/}
+                  <AccountData publicKey={publicKey}/>
                   {/*Transferencias */}
                   {/*Balance */}
                   <Divider my={10}/>
