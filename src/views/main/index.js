@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import AccountData from "./componentes/account-data"
-import { Button,Box,Stack,Divider,Text, useDisclosure } from "@chakra-ui/react";
+import { Button,Box,Stack,Divider,Text} from "@chakra-ui/react";
 import AddToken from "./componentes/add-token";
 import {SettingsIcon} from "@chakra-ui/icons";
 import Configuracion from "./configuracion";

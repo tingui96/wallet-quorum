@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from "react";
-import { Button,Box,Stack,Divider,Text ,useDisclosure,FormControl,FormLabel,Input,
-    Modal,ModalOverlay,ModalFooter,ModalHeader,ModalBody, ModalCloseButton,ModalContent} from "@chakra-ui/react";
+import React, {useState} from "react";
+import { Button ,useDisclosure,FormControl,FormLabel,Input,
+    Modal,ModalFooter,ModalHeader,ModalBody, ModalCloseButton,ModalContent} from "@chakra-ui/react";
 
 const AddToken = ({listOfTokens ,setListOfTokens}) => {
 

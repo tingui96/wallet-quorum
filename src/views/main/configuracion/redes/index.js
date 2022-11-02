@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Button,InputGroup,Stack,Text,Divider,Input,Editable,EditableInput,EditablePreview} from "@chakra-ui/react";
+import { Box, Button,InputGroup,Stack,Text,Divider,Input} from "@chakra-ui/react";
 
 const Redes = ({setConfigRedes}) => {
     const [url, setUrl] = useState(localStorage.getItem('url'));
