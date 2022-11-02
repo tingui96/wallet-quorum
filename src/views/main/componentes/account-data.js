@@ -9,7 +9,7 @@ import {
 import QRCode from "react-qr-code";
 import TokenList from "./tokenList";
 
-const AccountData = ({publicKey}) => {
+const AccountData = ({publicKey,listOfTokens}) => {
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     
@@ -18,7 +18,7 @@ const AccountData = ({publicKey}) => {
         <>
         <InputGroup alignItems="center">
             <Text textAlign="center" width=" 15rem" as="b" fontSize="xl">
-                Datos de la Cuenta 
+                Datos de la Cuenta
             </Text>
             <InputRightElement width="7rem">
                 <Button h="1.75rem"  colorScheme="telegram" size="sm"
@@ -40,8 +40,7 @@ const AccountData = ({publicKey}) => {
             </InputRightElement>
         </InputGroup>
         <InputGroup>
-            <TokenList/>
-
+            <TokenList listOfTokens={listOfTokens}/>
         </InputGroup>
         
         </>
