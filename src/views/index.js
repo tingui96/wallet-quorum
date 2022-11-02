@@ -4,19 +4,20 @@ import Setup from "./setup";
 import Warning from "./warning";
 
 const Views = () => {
-
+    localStorage.setItem('url',"http://localhost:22000");
+    localStorage.setItem('chainId','10');
     //variables para guardar las Llaves
     const [secret, setSecret] = useState(localStorage.getItem('secret'));
     const [publicKey, setPublicKey] = useState(localStorage.getItem('publicKey'));
     const [hasSaved, setHasSaved] = useState(!!localStorage.getItem('hasSaved'));
-
     //funcion para resetear la cuenta
     const resetAccount = () => {
         setSecret('');
         setPublicKey('');
         setHasSaved(false);
         localStorage.clear();
-        
+        localStorage.setItem('url',"http://localhost:22000");
+        localStorage.setItem('chainId','10');
     }
 
     //Condiciones de navegacion
