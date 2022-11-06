@@ -9,17 +9,51 @@ import {
     Td,
     TableCaption,
     TableContainer,
-  } from '@chakra-ui/react'
+    InputGroup,
+    list,
+  } from '@chakra-ui/react';
+  import Erc20 from '../utils/erc20.abi2.json';
 
-const TokenList = ({listOfTokens}) => {
-    //index.js
 
-    const listItems = listOfTokens?.map((token) =>
-      <Tr>
-        <Td>{token}</Td>
-      </Tr>
-);
-    return(
+const TokenList = ({publicKey}) => {
+
+///Funcion para buscar el nombre del token y el balance de la wallet
+    async function connectToken(rpc,tokenAddress,publicKey)
+    {
+        const Web3 = require('web3');
+        const Web3Client = new Web3(new Web3.providers.HttpProvider(rpc));
+        const contract = new Web3Client.eth.Contract(Erc20, tokenAddress);
+        var token = {
+          symbol: '',
+          balance: ''
+        }
+        await contract.methods.symbol().call()
+          .then( data => { token.symbol = data });
+        await contract.methods.balanceOf(publicKey).call()
+          .then(data => {token.balance = data});
+        return token;
+    }
+    
+///////////////////////////////////////////////////////////////////////////////////
+///                        Inicializando variables
+///////////////////////////////////////////////////////////////////////////////////
+      const tokenstring = localStorage.getItem('tokenList');
+      const listOfTokens = (tokenstring==null)? []:tokenstring.split(',');
+      const rpcUrl = localStorage.getItem('url');
+      const list = []
+
+       listOfTokens.map(element => {
+        //lista.push(connectToken(rpcUrl,element,publicKey));
+        connectToken(rpcUrl,element,publicKey)
+          .then(
+            (data) => {
+              list.push(data);
+            }
+            )});
+      console.log(list);
+
+
+    return( 
         <TableContainer>
       <Table size='sm'>
         <Thead>
@@ -30,7 +64,13 @@ const TokenList = ({listOfTokens}) => {
           </Tr>
         </Thead>
         <Tbody>
-            {listItems} 
+            {
+                list.map(element => {
+                  <Tr>
+                    <Td>{element.symbol}</Td>
+                  </Tr>
+                })
+            }
         </Tbody>
         <Tfoot>
           <Tr>

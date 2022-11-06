@@ -5,11 +5,21 @@ import AddToken from "./componentes/add-token";
 import {SettingsIcon} from "@chakra-ui/icons";
 import Configuracion from "./configuracion";
 
+
 const Main = ({publicKey, resetAccount}) => {
     const [url, setUrl] = useState(localStorage.getItem('url'));
     const [chainId, setChainId] = useState(localStorage.getItem('chainId'));
 
-    const [listOfTokens, setListOfTokens] = useState(["Pepe"]);
+    ///json//
+    const tokenstring1 = localStorage.getItem('tokenList');
+    if(tokenstring1 == null)
+    {
+      //localStorage.setItem('tokenList','');
+    }
+    const tokenstring = localStorage.getItem('tokenList');
+
+    const listOfTokens = (tokenstring==null)? []:tokenstring.split(',');  
+
     const [config,setConfig] = useState(false);
     const onConfig = () => {
         setConfig(true);
@@ -26,9 +36,9 @@ const Main = ({publicKey, resetAccount}) => {
                   maxWidth="500px" borderWidth="1px" p={6}>
                   <Stack width="100%" maxWidth="500px" justifyContent="center">
                     {/*Datos de la cuenta*/}
-                    <AccountData publicKey={publicKey} listOfTokens={listOfTokens}/>
+                    <AccountData publicKey={publicKey} listOfTokens= {listOfTokens}/>
                     {/*Transferencias */}
-                    <AddToken listOfTokens={listOfTokens} setListOfTokens={setListOfTokens}/>
+                    <AddToken/>
                     {/*Balance */}
                     <Divider my={10}/>
                     <Box display="flex" justifyContent="space-between" alignItems="center">

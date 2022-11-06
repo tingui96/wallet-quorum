@@ -4,8 +4,14 @@ import Setup from "./setup";
 import Warning from "./warning";
 
 const Views = () => {
-    localStorage.setItem('url',"http://localhost:22000");
-    localStorage.setItem('chainId','10');
+    try{
+            if(localStorage.getItem('url').length == 0)
+            {
+                localStorage.setItem('url',"http://localhost:22000");
+                localStorage.setItem('chainId','10');
+            }           
+        }
+        catch{}
     //variables para guardar las Llaves
     const [secret, setSecret] = useState(localStorage.getItem('secret'));
     const [publicKey, setPublicKey] = useState(localStorage.getItem('publicKey'));
@@ -16,8 +22,6 @@ const Views = () => {
         setPublicKey('');
         setHasSaved(false);
         localStorage.clear();
-        localStorage.setItem('url',"http://localhost:22000");
-        localStorage.setItem('chainId','10');
     }
 
     //Condiciones de navegacion
