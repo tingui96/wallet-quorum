@@ -3,7 +3,7 @@ import { Box, Button,InputGroup,Stack,Text,Divider } from "@chakra-ui/react";
 import {SettingsIcon} from "@chakra-ui/icons";
 import Redes from "./redes";
 
-const Configuracion = ({setConfig}) => {
+const Configuracion = ({url,setUrl,setConfig}) => {
     const goBack = () => {
         setConfig(false);
     };
@@ -13,7 +13,7 @@ const Configuracion = ({setConfig}) => {
     };
     if(configRedes)
     {
-        return(<Redes setConfigRedes={setConfigRedes}/>)
+        return(<Redes url={url} setUrl={setUrl}setConfigRedes={setConfigRedes}/>)
     }
     else
     {

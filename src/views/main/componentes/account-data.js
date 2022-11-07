@@ -1,11 +1,10 @@
-import React,{useState} from "react";
+import React from "react";
 import {
     Text,InputGroup,
-    Input,InputRightElement,
-    InputLeftAddon,InputRightAddon,
+    InputRightElement,
     Button,useDisclosure,
-    Modal,ModalOverlay,ModalFooter,ModalHeader,ModalBody, ModalCloseButton,ModalContent,
-    Table, Thead, Tbody, Tfoot,Tr,Th,Td,TableCaption,TableContainer
+    Modal,ModalFooter,ModalHeader,ModalBody, ModalCloseButton,ModalContent,
+    Table, Thead, Tbody, Tfoot,Tr,Th,Td,TableContainer
     
 } from '@chakra-ui/react'
 import QRCode from "react-qr-code";
@@ -32,7 +31,7 @@ const AccountData = ({publicKey, list,setList, rpcUrl}) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const tokenstring = localStorage.getItem('tokenList');
     const listOfTokens = (tokenstring==null)? []:tokenstring.split(',');
-    console.log(rpcUrl);
+
     if(listOfTokens.length>list.length)
     {
         listOfTokens?.map((element) => (

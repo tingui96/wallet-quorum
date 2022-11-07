@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useState} from "react";
 import AccountData from "./componentes/account-data"
 import { Button,Box,Stack,Divider,Text} from "@chakra-ui/react";
 import AddToken from "./componentes/add-token";
@@ -34,8 +34,8 @@ const Main = ({publicKey, resetAccount}) => {
                       <Button onClick={onConfig}><SettingsIcon/></Button>
                       <Text textAlign="center"> </Text>
                       <Button variant="outline" color="red"
-                      onClick={resetAccount}>Cerrar cuenta</Button>                    
-                    </Box>                  
+                      onClick={resetAccount}>Cerrar cuenta</Button>
+                    </Box>
                   </Stack>
               </Box>
           </>

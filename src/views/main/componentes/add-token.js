@@ -4,11 +4,16 @@ import { Button ,useDisclosure,FormControl,FormLabel,Input,useToast,
 import Erc20 from '../utils/erc20.abi.json';
 
 const AddToken = ({list,setList,rpcUrl,publicKey}) => {
-//listado de token
+            /////////////////////////////////////////////////////////////
+            ////////////     Cargar TODOS LOS CONTRATOS       ///////////
+            /////////////////////////////////////////////////////////////
+
    const tokenstring = localStorage.getItem('tokenList');
    const listOfTokens = (tokenstring==null)? []:tokenstring.split(',');
-   //console.log(listOfTokens);
-///
+
+            /////////////////////////////////////////////////////////////
+            ////////////                                      ///////////
+            /////////////////////////////////////////////////////////////
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [simbol,setSimbol] = useState('');
@@ -17,7 +22,6 @@ const AddToken = ({list,setList,rpcUrl,publicKey}) => {
     ///Conectando a la red para ver si existe el token///
     const Web3 = require('web3');
     const Web3Client = new Web3(new Web3.providers.HttpProvider(provider));
-    console.log(provider);
     const [contractToAdd, setContractToAdd] = useState('');
     async function handleContractChange(event){
         setContractToAdd(event.target.value);
