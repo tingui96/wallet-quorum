@@ -8,25 +8,14 @@ import Configuracion from "./configuracion";
 
 const Main = ({publicKey, resetAccount}) => {
     const [url, setUrl] = useState(localStorage.getItem('url'));
-    const [chainId, setChainId] = useState(localStorage.getItem('chainId'));
-
-    ///json//
-    const tokenstring1 = localStorage.getItem('tokenList');
-    if(tokenstring1 == null)
-    {
-      //localStorage.setItem('tokenList','');
-    }
-    const tokenstring = localStorage.getItem('tokenList');
-
-    const listOfTokens = (tokenstring==null)? []:tokenstring.split(',');  
-
+    const [list,setList] = useState([]);
     const [config,setConfig] = useState(false);
     const onConfig = () => {
         setConfig(true);
     };
     if(config)
     {
-      return(<Configuracion setConfig={setConfig}/>);
+      return(<Configuracion url={url} setUrl={setUrl} setConfig={setConfig}/>);
     }
     else
     {
@@ -36,9 +25,9 @@ const Main = ({publicKey, resetAccount}) => {
                   maxWidth="500px" borderWidth="1px" p={6}>
                   <Stack width="100%" maxWidth="500px" justifyContent="center">
                     {/*Datos de la cuenta*/}
-                    <AccountData publicKey={publicKey} listOfTokens= {listOfTokens}/>
+                    <AccountData publicKey={publicKey} list={list} setList={setList} rpcUrl={url}/>
                     {/*Transferencias */}
-                    <AddToken/>
+                    <AddToken list= {list} setList={setList} rpcUrl={url} publicKey={publicKey}/>
                     {/*Balance */}
                     <Divider my={10}/>
                     <Box display="flex" justifyContent="space-between" alignItems="center">

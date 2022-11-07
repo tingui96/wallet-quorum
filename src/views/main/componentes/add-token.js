@@ -1,9 +1,9 @@
 import React, {useState} from "react";
-import { Button ,useDisclosure,FormControl,FormLabel,Input,useToast,Wrap,WrapItem,
+import { Button ,useDisclosure,FormControl,FormLabel,Input,useToast,
     Modal,ModalFooter,ModalHeader,ModalBody, ModalCloseButton,ModalContent} from "@chakra-ui/react";
 import Erc20 from '../utils/erc20.abi.json';
 
-const AddToken = () => {
+const AddToken = ({list,setList,rpcUrl,publicKey}) => {
 //listado de token
    const tokenstring = localStorage.getItem('tokenList');
    const listOfTokens = (tokenstring==null)? []:tokenstring.split(',');
@@ -12,14 +12,12 @@ const AddToken = () => {
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [simbol,setSimbol] = useState('');
-    const [decimal,setDecimal] = useState('');
-
+    const [balanceOf,setBalanceOf] = useState('');
+    const provider = rpcUrl;
     ///Conectando a la red para ver si existe el token///
     const Web3 = require('web3');
-    const rpcUrl = localStorage.getItem('url');
-    const provider = rpcUrl;
     const Web3Client = new Web3(new Web3.providers.HttpProvider(provider));
-
+    console.log(provider);
     const [contractToAdd, setContractToAdd] = useState('');
     async function handleContractChange(event){
         setContractToAdd(event.target.value);
@@ -27,13 +25,13 @@ const AddToken = () => {
         const contract = new Web3Client.eth.Contract(Erc20, tokenAddress);        
         try{
             const nam = await contract.methods.symbol().call();
-            const dec = await contract.methods.decimals().call();
+            const bal = await contract.methods.balanceOf(publicKey).call();
             setSimbol(nam);
-            setDecimal(dec);
+            setBalanceOf(bal);
         }
         catch{
             setSimbol('');
-            setDecimal('');
+            setBalanceOf('');
         }
     };
 
@@ -42,6 +40,11 @@ const AddToken = () => {
         if(typeof(find)==='undefined')
         {
             const nuevaLista = listOfTokens.concat(contractToAdd);
+            const tok = {
+                symbol: simbol,
+                balance: balanceOf
+            }
+            setList([...list,tok]);
             //console.log(nuevaLista);
             localStorage.setItem('tokenList',nuevaLista.toString());
             onClose();
@@ -91,7 +94,7 @@ const AddToken = () => {
                         <FormLabel>Simbolo</FormLabel>
                         <Input value={simbol} readOnly placeholder='simbolo' onChange={handleContractChange}/>
                         <FormLabel>Decimales</FormLabel>
-                        <Input value={decimal} readOnly placeholder='decimales' onChange={handleContractChange}/>
+                        <Input value={balanceOf} readOnly placeholder='decimales' onChange={handleContractChange}/>
                     </FormControl>
                     </ModalBody>
                     <ModalFooter>
