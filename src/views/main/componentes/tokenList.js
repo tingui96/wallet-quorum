@@ -12,7 +12,7 @@ import {
     InputGroup,
     list,
   } from '@chakra-ui/react';
-  import Erc20 from '../utils/erc20.abi2.json';
+  import Erc20 from '../utils/erc20.abi.json';
 
 
 const TokenList = ({publicKey}) => {
@@ -40,8 +40,8 @@ const TokenList = ({publicKey}) => {
       const tokenstring = localStorage.getItem('tokenList');
       const listOfTokens = (tokenstring==null)? []:tokenstring.split(',');
       const rpcUrl = localStorage.getItem('url');
-      const list = []
-
+      const [list,setList] = useState([]);
+      
        listOfTokens.map(element => {
         //lista.push(connectToken(rpcUrl,element,publicKey));
         connectToken(rpcUrl,element,publicKey)
@@ -51,6 +51,11 @@ const TokenList = ({publicKey}) => {
             }
             )});
       console.log(list);
+
+      const checkBalance = async (token) => {
+      const tok = await connectToken(rpcUrl,token,publicKey);
+      setList([...list,tok]);
+    };
 
 
     return( 
@@ -65,11 +70,12 @@ const TokenList = ({publicKey}) => {
         </Thead>
         <Tbody>
             {
-                list.map(element => {
+                list?.map((element) => (
                   <Tr>
                     <Td>{element.symbol}</Td>
+                    <Td>{element.balance}</Td>
                   </Tr>
-                })
+                ))
             }
         </Tbody>
         <Tfoot>
