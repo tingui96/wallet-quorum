@@ -42,20 +42,26 @@ const TokenList = ({publicKey}) => {
       const rpcUrl = localStorage.getItem('url');
       const [list,setList] = useState([]);
       
-       listOfTokens?.map((element) => (
-        //lista.push(connectToken(rpcUrl,element,publicKey));
-        connectToken(rpcUrl,element,publicKey)
-          .then(
-            (data) => {
-              list.push(data);
-            }
-            )));
+      if(listOfTokens.length>list.length)
+      {
+          listOfTokens?.map((element) => (
+            //lista.push(connectToken(rpcUrl,element,publicKey));
+            
+            connectToken(rpcUrl,element,publicKey)
+              .then(
+                (data) => {
+                  //list.push(data);
+                  setList([...list,data]);
+                }
+                )));
+      }
+       
       console.log(list);
 
-      const checkBalance = async (token) => {
+   /*   const checkBalance = async (token) => {
       const tok = await connectToken(rpcUrl,token,publicKey);
       setList([...list,tok]);
-    };
+    };*/
 
 
     return( 

@@ -38,17 +38,30 @@ const AddToken = () => {
     };
 
     function manejarAgregar () {
-        
-        const nuevaLista = listOfTokens.concat(contractToAdd);
-        //console.log(nuevaLista);
-        localStorage.setItem('tokenList',nuevaLista.toString());
+        const find = listOfTokens.find(x => x===contractToAdd)
+        if(typeof(find)==='undefined')
+        {
+            const nuevaLista = listOfTokens.concat(contractToAdd);
+            //console.log(nuevaLista);
+            localStorage.setItem('tokenList',nuevaLista.toString());
+            onClose();
+        }
+        else{
+            toast({
+                title: 'Ya existe.',
+                description: "Esa direccion de contrato ya existe",
+                status: 'warning',
+                duration: 5000,
+                isClosable: true,
+            })
+        }
+
     }
     const toast = useToast();
     const handleClose = () => {
         if(simbol.length>0)
         {
             manejarAgregar();
-            onClose();
         }
         else
         {
