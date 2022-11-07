@@ -42,14 +42,14 @@ const TokenList = ({publicKey}) => {
       const rpcUrl = localStorage.getItem('url');
       const [list,setList] = useState([]);
       
-       listOfTokens.map(element => {
+       listOfTokens?.map((element) => (
         //lista.push(connectToken(rpcUrl,element,publicKey));
         connectToken(rpcUrl,element,publicKey)
           .then(
             (data) => {
               list.push(data);
             }
-            )});
+            )));
       console.log(list);
 
       const checkBalance = async (token) => {
