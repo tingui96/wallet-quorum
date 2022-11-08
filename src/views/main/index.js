@@ -4,12 +4,29 @@ import { Button,Box,Stack,Divider,Text} from "@chakra-ui/react";
 import AddToken from "./componentes/add-token";
 import {SettingsIcon} from "@chakra-ui/icons";
 import Configuracion from "./configuracion";
-
+import connectToken from "./utils/connectToken";
 
 const Main = ({publicKey, resetAccount}) => {
+
     const [url, setUrl] = useState(localStorage.getItem('url'));
+
     const [list,setList] = useState([]);
     const [config,setConfig] = useState(false);
+    const tokenstring = localStorage.getItem('tokenList');
+    const listOfTokens = (tokenstring==null)? []:tokenstring.split(',');
+
+    if(listOfTokens.length>list.length)
+    {
+        listOfTokens?.map((element) => (
+          connectToken(url,element,publicKey)
+            .then(
+              (data) => {
+                setList([...list,data]);
+              }
+              )));
+    }
+
+
     const onConfig = () => {
         setConfig(true);
     };
@@ -25,7 +42,7 @@ const Main = ({publicKey, resetAccount}) => {
                   maxWidth="500px" borderWidth="1px" p={6}>
                   <Stack width="100%" maxWidth="500px" justifyContent="center">
                     {/*Datos de la cuenta*/}
-                    <AccountData publicKey={publicKey} list={list} setList={setList} rpcUrl={url}/>
+                    <AccountData publicKey={publicKey} list={list} />
                     {/*Transferencias */}
                     <AddToken list= {list} setList={setList} rpcUrl={url} publicKey={publicKey}/>
                     {/*Balance */}

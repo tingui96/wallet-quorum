@@ -5,43 +5,14 @@ import {
     Button,useDisclosure,
     Modal,ModalFooter,ModalHeader,ModalBody, ModalCloseButton,ModalContent,
     Table, Thead, Tbody, Tfoot,Tr,Th,Td,TableContainer
-    
 } from '@chakra-ui/react'
 import QRCode from "react-qr-code";
-import Erc20 from '../utils/erc20.abi.json';
 
-async function connectToken(rpc,tokenAddress,publicKey)
-    {
-        const Web3 = require('web3');
-        const Web3Client = new Web3(new Web3.providers.HttpProvider(rpc));
-        const contract = new Web3Client.eth.Contract(Erc20, tokenAddress);
-        var token = {
-          symbol: '',
-          balance: ''
-        }
-        await contract.methods.symbol().call()
-          .then( data => { token.symbol = data });
-        await contract.methods.balanceOf(publicKey).call()
-          .then(data => {token.balance = data});
-        return token;
-    }
 
-const AccountData = ({publicKey, list,setList, rpcUrl}) => {
+const AccountData = ({publicKey, list}) => {
 
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const tokenstring = localStorage.getItem('tokenList');
-    const listOfTokens = (tokenstring==null)? []:tokenstring.split(',');
 
-    if(listOfTokens.length>list.length)
-    {
-        listOfTokens?.map((element) => (
-          connectToken(rpcUrl,element,publicKey)
-            .then(
-              (data) => {
-                setList([...list,data]);
-              }
-              )));
-    }
     return (
         <>
         <InputGroup alignItems="center">
