@@ -93,7 +93,7 @@ const AddToken = ({list,setList,rpcUrl,publicKey}) => {
                     <ModalCloseButton />
                     <ModalBody>
                     <FormControl>
-                        <FormLabel>Direccion del contrato</FormLabel>
+                        <FormLabel>Balance</FormLabel>
                         <Input placeholder='contrato' onChange={handleContractChange}/>
                         <FormLabel>Simbolo</FormLabel>
                         <Input value={simbol} readOnly placeholder='simbolo' onChange={handleContractChange}/>
