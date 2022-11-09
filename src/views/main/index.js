@@ -10,23 +10,9 @@ const Main = ({publicKey, resetAccount}) => {
 
     const [url, setUrl] = useState(localStorage.getItem('url'));
 
-    const [list,setList] = useState([]);
+    const [list,setList] = useState(JSON.parse(localStorage.getItem('tokenList')));
+    if(list===null){setList([])}
     const [config,setConfig] = useState(false);
-    const tokenstring = localStorage.getItem('tokenList');
-    const listOfTokens = (tokenstring==null)? []:tokenstring.split(',');
-
-   // if(listOfTokens.length>list.length)
-    //{
-        listOfTokens?.forEach((element) => (
-          connectToken(url,element,publicKey)
-            .then(
-              (data) => {
-                if(typeof(list.find(x=>x.symbol===data.symbol))==='undefined')
-                {setList([...list,data]);}
-              }
-              )));
-   // }
-
 
     const onConfig = () => {
         setConfig(true);

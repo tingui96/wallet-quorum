@@ -4,16 +4,6 @@ import { Button ,useDisclosure,FormControl,FormLabel,Input,useToast,
 import Erc20 from '../utils/erc20.abi.json';
 
 const AddToken = ({list,setList,rpcUrl,publicKey}) => {
-            /////////////////////////////////////////////////////////////
-            ////////////     Cargar TODOS LOS CONTRATOS       ///////////
-            /////////////////////////////////////////////////////////////
-
-   const tokenstring = localStorage.getItem('tokenList');
-   const listOfTokens = (tokenstring==null)? []:tokenstring.split(',');
-
-            /////////////////////////////////////////////////////////////
-            ////////////                                      ///////////
-            /////////////////////////////////////////////////////////////
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [simbol,setSimbol] = useState('');
@@ -24,9 +14,9 @@ const AddToken = ({list,setList,rpcUrl,publicKey}) => {
     const Web3Client = new Web3(new Web3.providers.HttpProvider(provider));
     const [contractToAdd, setContractToAdd] = useState('');
     async function handleContractChange(event){
-        setContractToAdd(event.target.value);
         const tokenAddress = event.target.value;
-        const contract = new Web3Client.eth.Contract(Erc20, tokenAddress);        
+        setContractToAdd(tokenAddress);
+        const contract = new Web3Client.eth.Contract(Erc20, tokenAddress);
         try{
             const nam = await contract.methods.symbol().call();
             const bal = await contract.methods.balanceOf(publicKey).call();
@@ -40,17 +30,16 @@ const AddToken = ({list,setList,rpcUrl,publicKey}) => {
     };
 
     function manejarAgregar () {
-        const find = listOfTokens.find(x => x===contractToAdd)
+        const find = list?.find(x => x.contract ===contractToAdd)
         if(typeof(find)==='undefined')
         {
-            const nuevaLista = listOfTokens.concat(contractToAdd);
             const tok = {
                 symbol: simbol,
-                balance: balanceOf
+                balance: balanceOf,
+                contract: contractToAdd
             }
             setList([...list,tok]);
-            //console.log(nuevaLista);
-            localStorage.setItem('tokenList',nuevaLista.toString());
+            localStorage.setItem('tokenList',JSON.stringify(list));
             onClose();
         }
         else{
