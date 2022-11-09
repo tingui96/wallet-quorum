@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
     Text,InputGroup,
     InputRightElement,
@@ -12,6 +12,10 @@ import QRCode from "react-qr-code";
 const AccountData = ({publicKey, list}) => {
 
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const saveList = () => {
+        localStorage.setItem('tokenList',JSON.stringify(list));
+    };
+    useEffect(saveList,[list]);
 
     return (
         <>

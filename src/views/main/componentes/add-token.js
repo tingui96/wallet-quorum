@@ -13,7 +13,8 @@ const AddToken = ({list,setList,rpcUrl,publicKey}) => {
     const Web3 = require('web3');
     const Web3Client = new Web3(new Web3.providers.HttpProvider(provider));
     const [contractToAdd, setContractToAdd] = useState('');
-    async function handleContractChange(event){
+
+    const handleContractChange =  async (event) => {
         const tokenAddress = event.target.value;
         setContractToAdd(tokenAddress);
         const contract = new Web3Client.eth.Contract(Erc20, tokenAddress);
@@ -29,7 +30,7 @@ const AddToken = ({list,setList,rpcUrl,publicKey}) => {
         }
     };
 
-    function manejarAgregar () {
+    const manejarAgregar = () => {
         const find = list?.find(x => x.contract ===contractToAdd)
         if(typeof(find)==='undefined')
         {
@@ -69,7 +70,7 @@ const AddToken = ({list,setList,rpcUrl,publicKey}) => {
             isClosable: true,
           })
         }
-        
+
     }
     return(
         <>
