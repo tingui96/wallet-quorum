@@ -2,13 +2,15 @@ import React, {useState} from "react";
 import Main from "./main";
 import Setup from "./setup";
 import Warning from "./warning";
+//import RpcUrl from "./main/configuracion/rpc.json";
 
 const Views = () => {
-
-    if(localStorage.getItem('url') == null)
+    const rpc = localStorage.getItem('url');
+    if(rpc === 'null' || rpc === null )
     {
-        localStorage.setItem('url',"https://goerli.infura.io/v3/a01d2ed284e046f3b1d92517a0178a98");
+        localStorage.setItem('url',  "https://goerli.infura.io/v3/a01d2ed284e046f3b1d92517a0178a98" );
     }
+
     //variables para guardar las Llaves
     const [secret, setSecret] = useState(localStorage.getItem('secret'));
     const [publicKey, setPublicKey] = useState(localStorage.getItem('publicKey'));

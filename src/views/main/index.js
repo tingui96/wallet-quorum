@@ -15,16 +15,17 @@ const Main = ({publicKey, resetAccount}) => {
     const tokenstring = localStorage.getItem('tokenList');
     const listOfTokens = (tokenstring==null)? []:tokenstring.split(',');
 
-    if(listOfTokens.length>list.length)
-    {
-        listOfTokens?.map((element) => (
+   // if(listOfTokens.length>list.length)
+    //{
+        listOfTokens?.forEach((element) => (
           connectToken(url,element,publicKey)
             .then(
               (data) => {
-                setList([...list,data]);
+                if(typeof(list.find(x=>x.symbol===data.symbol))==='undefined')
+                {setList([...list,data]);}
               }
               )));
-    }
+   // }
 
 
     const onConfig = () => {
@@ -39,8 +40,8 @@ const Main = ({publicKey, resetAccount}) => {
       return(
           <>
               <Box display="flex" justifyContent="center" width="100%"
-                  maxWidth="500px" borderWidth="1px" p={6}>
-                  <Stack width="100%" maxWidth="500px" justifyContent="center">
+                  maxWidth="600px" borderWidth="1px" p={6}>
+                  <Stack width="100%" maxWidth="600px" justifyContent="center">
                     {/*Datos de la cuenta*/}
                     <AccountData publicKey={publicKey} list={list} />
                     {/*Transferencias */}
