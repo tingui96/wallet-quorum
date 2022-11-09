@@ -49,8 +49,8 @@ const AccountData = ({publicKey, list}) => {
             </Tr>
           </Thead>
           <Tbody>
-              {list?.map((element) => (
-                    <Tr>
+              {list?.map((element,key) => (
+                    <Tr key={key} >
                       <Td>{element.symbol}</Td>
                       <Td>{element.balance}</Td>
                     </Tr> ))}
