@@ -13,6 +13,6 @@ async function getBalance(rpc,token,publicKey)
   }
   await contract.methods.balanceOf(publicKey).call()
           .then(data => {tok.balance = data});
-  return tok;
+  return tok; 
 };
 export default getBalance;
