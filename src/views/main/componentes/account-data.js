@@ -4,21 +4,22 @@ import {
     InputRightElement,
     Button,useDisclosure,
     Modal,ModalFooter,ModalHeader,ModalBody, ModalCloseButton,ModalContent,
-    Table, Thead, Tbody, Tfoot,Tr,Th,Td,TableContainer
+    Table, Thead, Tbody, Tfoot,Tr,Th,Td,TableContainer, Tooltip
 } from '@chakra-ui/react'
 import QRCode from "react-qr-code";
 import getBalance from "../utils/getBalance";
+import { ArrowRightIcon } from "@chakra-ui/icons";
 
 const AccountData = ({publicKey, list,setList, rpcUrl}) => {
-
+    const MINUTE_MS = 5000;
     const { isOpen, onOpen, onClose } = useDisclosure();
     const saveList = () => {
         localStorage.setItem('tokenList',JSON.stringify(list));
     };
     useEffect(saveList,[list]);
 
-    
     const onLoad = async() => {
+      console.log(1);
 
       var newList = await Promise.all(list.map(
         async (element) => 
@@ -28,8 +29,13 @@ const AccountData = ({publicKey, list,setList, rpcUrl}) => {
       ))
       setList(newList);
     }
-    onLoad();
-    
+    setInterval(onLoad,MINUTE_MS);
+
+    const selectToken = (event) =>
+    {
+
+    }
+
 
     return (
         <>
@@ -63,14 +69,15 @@ const AccountData = ({publicKey, list,setList, rpcUrl}) => {
             <Tr>
               <Th>Medicamento</Th>
               <Th>cantidad</Th>
-              <Th>Pendientes de aceptar</Th>
+              {/*<Th>Pendientes de aceptar</Th>*/}
             </Tr>
           </Thead>
           <Tbody>
               {list?.map((element,key) => (
-                    <Tr key={key} >
+                    <Tr key={key} onMouseOver={selectToken}>
                       <Td>{element.symbol}</Td>
                       <Td>{element.balance}</Td>
+                      <Td><Tooltip label={"Send ".concat(element.symbol)}><ArrowRightIcon/></Tooltip></Td>
                     </Tr> ))}
           </Tbody>
           <Tfoot>
