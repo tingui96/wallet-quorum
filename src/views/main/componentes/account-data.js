@@ -17,20 +17,19 @@ const AccountData = ({publicKey, list,setList, rpcUrl}) => {
     };
     useEffect(saveList,[list]);
 
-    useEffect(() =>{
-      const onLoad = async() => {
+    
+    const onLoad = async() => {
 
-        var newList = await Promise.all(list.map(
-          async (element) => 
-          {
-            return await getBalance(rpcUrl,element,publicKey)
-          }
-        ))
-        setList(newList);
-
-      }
-      onLoad()
-    },[]);
+      var newList = await Promise.all(list.map(
+        async (element) => 
+        {
+          return await getBalance(rpcUrl,element,publicKey)
+        }
+      ))
+      setList(newList);
+    }
+    onLoad();
+    
 
     return (
         <>
