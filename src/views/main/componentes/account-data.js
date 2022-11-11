@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect} from "react";
 import {
     Text,InputGroup,
     InputRightElement,
@@ -7,15 +7,30 @@ import {
     Table, Thead, Tbody, Tfoot,Tr,Th,Td,TableContainer
 } from '@chakra-ui/react'
 import QRCode from "react-qr-code";
+import getBalance from "../utils/getBalance";
 
-
-const AccountData = ({publicKey, list}) => {
+const AccountData = ({publicKey, list,setList, rpcUrl}) => {
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     const saveList = () => {
         localStorage.setItem('tokenList',JSON.stringify(list));
     };
     useEffect(saveList,[list]);
+
+    useEffect(() =>{
+      const onLoad = async() => {
+
+        var newList = await Promise.all(list.map(
+          async (element) => 
+          {
+            return await getBalance(rpcUrl,element,publicKey)
+          }
+        ))
+        setList(newList);
+
+      }
+      onLoad()
+    },[]);
 
     return (
         <>

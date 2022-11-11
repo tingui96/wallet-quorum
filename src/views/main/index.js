@@ -4,7 +4,6 @@ import { Button,Box,Stack,Divider,Text} from "@chakra-ui/react";
 import AddToken from "./componentes/add-token";
 import {SettingsIcon} from "@chakra-ui/icons";
 import Configuracion from "./configuracion";
-import connectToken from "./utils/connectToken";
 
 const Main = ({publicKey, resetAccount}) => {
 
@@ -29,7 +28,7 @@ const Main = ({publicKey, resetAccount}) => {
                   maxWidth="600px" borderWidth="1px" p={6}>
                   <Stack width="100%" maxWidth="600px" justifyContent="center">
                     {/*Datos de la cuenta*/}
-                    <AccountData publicKey={publicKey} list={list} />
+                    <AccountData publicKey={publicKey} list={list} setList={setList} rpcUrl={url} />
                     {/*Transferencias */}
                     <AddToken list= {list} setList={setList} rpcUrl={url} publicKey={publicKey}/>
                     {/*Balance */}

@@ -7,13 +7,13 @@ async function connectToken(rpc,tokenAddress,publicKey)
         const contract = new Web3Client.eth.Contract(Erc20, tokenAddress);
         var token = {
           symbol: '',
-          balance: ''
+          balance: '',
+          contract: tokenAddress
         }
         await contract.methods.symbol().call()
           .then( data => { token.symbol = data });
         await contract.methods.balanceOf(publicKey).call()
           .then(data => {token.balance = data});
         return token;
-    }
+    };
 export default connectToken;
-
