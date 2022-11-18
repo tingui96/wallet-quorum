@@ -73,7 +73,7 @@ const Warning = ({secret, resetAccount, setHasSaved}) => {
         {
             const encryptPrivateKey = web3.eth.accounts.encrypt(secret,password);
             localStorage.setItem('secret',JSON.stringify(encryptPrivateKey));
-            localStorage.setItem('hasCopied',true)
+            localStorage.setItem('hasSaved',true)
             setHasSaved(true); 
         }
         else

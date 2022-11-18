@@ -71,9 +71,11 @@ const Setup = ({setSecret, setPublicKey, setHasSaved, setHasPass}) => {
                     setSecret(encryptText);
                     setPublicKey(account.address);
                     setHasSaved(true);
+                    setHasPass(true)
                     localStorage.setItem('hasSaved',true);
                     localStorage.setItem('publicKey', account.address);
                     localStorage.setItem('secret',encryptText);
+                    guardarConExpiracion('hasPass',true);
                 }
                 catch{
                     toast({
