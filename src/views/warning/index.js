@@ -17,11 +17,11 @@ const Warning = ({secret, resetAccount, setHasSaved}) => {
     const [show, setShow] = useState(false);
     const handleClick = () => setShow(!show);
     const toast = useToast();
+    const Web3 = require('web3');
+    const web3 = new Web3();
 
     const guardar = () => 
     {
-        const Web3 = require('web3');
-        const web3 = new Web3();
         const encryptPrivateKey = web3.eth.accounts.encrypt(secret,password);
         const blob = new Blob([JSON.stringify(encryptPrivateKey)],{ type: 'text/plain;charset= utf-8' });
         saveAs(blob,fileName+'.pk' );
@@ -71,6 +71,8 @@ const Warning = ({secret, resetAccount, setHasSaved}) => {
     const goForward = () => {
         if(hasSaveFile)
         {
+            const encryptPrivateKey = web3.eth.accounts.encrypt(secret,password);
+            localStorage.setItem('secret',JSON.stringify(encryptPrivateKey));
             localStorage.setItem('hasCopied',true)
             setHasSaved(true); 
         }

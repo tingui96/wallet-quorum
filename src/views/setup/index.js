@@ -9,8 +9,9 @@ import {
     Input,InputGroup,InputRightElement, Divider
     
 } from "@chakra-ui/react"; 
+import { guardarConExpiracion } from "../auth.js";
 
-const Setup = ({setSecret, setPublicKey, setHasSaved}) => {
+const Setup = ({setSecret, setPublicKey, setHasSaved, setHasPass}) => {
     const createAccount = () => {
         const Web3 = require('web3');
         const web3 = new Web3();
@@ -22,10 +23,11 @@ const Setup = ({setSecret, setPublicKey, setHasSaved}) => {
         //console.log(secret);
         setSecret(secret);
         setPublicKey(publicKey);
-
+        const encryptPrivateKey = web3.eth.accounts.encrypt(secret,password);
         localStorage.setItem('publicKey', publicKey);
-        localStorage.setItem('secret',secret);
-        
+        localStorage.setItem('secret',JSON.stringify(encryptPrivateKey));
+        guardarConExpiracion('hasPass',true);
+        setHasPass(true);
     };
 
     const toast = useToast();
@@ -66,12 +68,12 @@ const Setup = ({setSecret, setPublicKey, setHasSaved}) => {
                 const web3 = new Web3();
                 try{
                     const account = web3.eth.accounts.decrypt(encryptText,password);
-                    setSecret(account.privateKey);
+                    setSecret(encryptText);
                     setPublicKey(account.address);
                     setHasSaved(true);
                     localStorage.setItem('hasSaved',true);
                     localStorage.setItem('publicKey', account.address);
-                    localStorage.setItem('secret',account.privateKey);
+                    localStorage.setItem('secret',encryptText);
                 }
                 catch{
                     toast({
