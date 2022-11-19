@@ -19,7 +19,7 @@ const Pass = ({setHasPass}) => {
 
     const Aceptar = (event) => {
         try{
-            const account = web3.eth.accounts.decrypt(encryptText,password);
+            web3.eth.accounts.decrypt(encryptText,password);
             setHasPass(true);
             //localStorage.setItem('hasPass',true);
             guardarConExpiracion('hasPass',true);

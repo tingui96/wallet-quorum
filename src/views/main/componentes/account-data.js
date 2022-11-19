@@ -7,7 +7,6 @@ import {
     Table, Thead, Tbody, Tfoot,Tr,Th,Td,TableContainer, Tooltip
 } from '@chakra-ui/react'
 import QRCode from "react-qr-code";
-import getBalance from "../utils/getBalance";
 import { ArrowRightIcon } from "@chakra-ui/icons";
 import SendToken from "./send-token";
 

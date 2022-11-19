@@ -8,8 +8,6 @@ function buscarConExpiracion(key) {
    const data = JSON.parse(localStorage.getItem(key));
    const fecha = new Date();
     if(data==null)return null;
-    console.log(data.fecha);
-   console.log(fecha.getTime());
    if (fecha.getTime() - data.fecha > (60 * 1000)) { 
     
     // un dia en ms
