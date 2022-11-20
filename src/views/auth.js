@@ -8,7 +8,7 @@ function buscarConExpiracion(key) {
    const data = JSON.parse(localStorage.getItem(key));
    const fecha = new Date();
     if(data==null)return null;
-   if (fecha.getTime() - data.fecha > (60 * 1000)) { 
+   if (fecha.getTime() - data.fecha > (15*60 * 1000)) { 
     
     // un dia en ms
      localStorage.removeItem(key);

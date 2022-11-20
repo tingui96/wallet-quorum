@@ -30,7 +30,7 @@ const Pass = ({setHasPass}) => {
                 title: 'Error',
                 description: err.message,
                 status: 'error',
-                duration: 9000,
+                duration: 5000,
                 isClosable: true
             })
         }

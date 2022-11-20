@@ -58,7 +58,7 @@ const Setup = ({setSecret, setPublicKey, setHasSaved, setHasPass}) => {
                     title: 'Advertencia',
                     description: "Debe elegir algun archivo",
                     status: 'info',
-                    duration: 9000,
+                    duration: 5000,
                     isClosable: true
                 })
             }
@@ -82,7 +82,7 @@ const Setup = ({setSecret, setPublicKey, setHasSaved, setHasPass}) => {
                         title: 'Error',
                         description: "La contraseña para esa llave privada no es correcta",
                         status: 'error',
-                        duration: 9000,
+                        duration: 5000,
                         isClosable: true
                     })
                 }               
@@ -94,7 +94,7 @@ const Setup = ({setSecret, setPublicKey, setHasSaved, setHasPass}) => {
                 title: 'Error',
                 description: "La contraseña debe ser mayor de 8 caracteres.",
                 status: 'error',
-                duration: 9000,
+                duration: 5000,
                 isClosable: true,
               })
         }

@@ -1,14 +1,16 @@
 import React, { useState} from "react";
 import AccountData from "./componentes/account-data"
 import { Button,Box,Stack,Divider,Text} from "@chakra-ui/react";
-import AddToken from "./componentes/add-token";
 import {SettingsIcon} from "@chakra-ui/icons";
 import Configuracion from "./configuracion";
+import AddToken from "./componentes/add-token";
+import SendToken from "./componentes/send-token";
 
 const Main = ({publicKey, resetAccount}) => {
 
     const [url, setUrl] = useState(localStorage.getItem('url'));
-
+    const [IsSendToken,setIsSendToken] = useState(false);
+    const [tokenSel,setTokenSel] = useState('');
     const [list,setList] = useState(JSON.parse(localStorage.getItem('tokenList')));
     if(list===null){setList([])}
     const [config,setConfig] = useState(false);
@@ -20,6 +22,10 @@ const Main = ({publicKey, resetAccount}) => {
     {
       return(<Configuracion url={url} setUrl={setUrl} setConfig={setConfig}/>);
     }
+    else if(IsSendToken)
+    {
+      return(<SendToken setIsSendToken={setIsSendToken} token={tokenSel}/>)
+    }
     else
     {
       return(
@@ -28,10 +34,12 @@ const Main = ({publicKey, resetAccount}) => {
                   maxWidth="600px" borderWidth="1px" p={6}>
                   <Stack width="100%" maxWidth="600px" justifyContent="center">
                     {/*Datos de la cuenta*/}
-                    <AccountData publicKey={publicKey} list={list} setList={setList} rpcUrl={url} />
+                    <AccountData publicKey={publicKey} list={list} setIsSendToken={setIsSendToken} setTokenSel={setTokenSel} />
                     {/*Transferencias */}
-                    <AddToken list= {list} setList={setList} rpcUrl={url} publicKey={publicKey}/>
                     {/*Balance */}
+
+                    <Divider my={10}/>
+                    <AddToken list={list} setList={setList} rpcUrl={url} publicKey={publicKey} />
                     <Divider my={10}/>
                     <Box display="flex" justifyContent="space-between" alignItems="center">
                       <Button onClick={onConfig}><SettingsIcon/></Button>
