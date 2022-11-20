@@ -79,7 +79,7 @@ const AddToken = ({list,setList,rpcUrl,publicKey}) => {
             </Button>
             <Modal isOpen={isOpen} onClose={onClose}>
                   <ModalContent>
-                    <ModalHeader>Escanee este codigo para recibir</ModalHeader>
+                    <ModalHeader>Escriba la direccion del contrato</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
                     <FormControl>

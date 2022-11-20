@@ -30,7 +30,6 @@ const AccountData = ({publicKey, list,setIsSendToken,setTokenSel}) => {
   //    setList(newList);
   //  }
   //  setInterval(onLoad,MINUTE_MS);
-
     const goSendToken = (token) =>
     {
         setTokenSel(token)
@@ -49,7 +48,7 @@ const AccountData = ({publicKey, list,setIsSendToken,setTokenSel}) => {
                  <ModalContent>
                    <ModalHeader>Escanee este codigo para recibir</ModalHeader>
                    <ModalCloseButton />
-                   <ModalBody isCentered>
+                   <ModalBody>
                        <InputGroup marginLeft={10}>
                            <QRCode value={publicKey} size={256} bgColor="#282c34" fgColor="#fff" level="H" />
                        </InputGroup>
@@ -67,16 +66,17 @@ const AccountData = ({publicKey, list,setIsSendToken,setTokenSel}) => {
          <Thead>
            <Tr>
              <Th>Medicamento</Th>
-             <Th>cantidad</Th>
+             <Th >cantidad</Th>
              {/*<Th>Pendientes de aceptar</Th>*/}
            </Tr>
          </Thead>
          <Tbody>
              {list?.map((element,key) => (
-                   <Tr key={key} onClick={() => goSendToken(element)} >
+                   <Tr id={key} key={key} onClick={() => goSendToken(element)}
+                      >
                      <Td>{element.symbol}</Td>
-                     <Td>{element.balance}</Td>
-                     <Td><Tooltip label={"Send ".concat(element.symbol)}><ArrowRightIcon /></Tooltip></Td>
+                     <Td width={300}>{element.balance}</Td>
+                     <Td ><Tooltip label={"Send ".concat(element.symbol)}><ArrowRightIcon /></Tooltip></Td>
                    </Tr> ))}
          </Tbody>
          <Tfoot>

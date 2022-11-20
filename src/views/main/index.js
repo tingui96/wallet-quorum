@@ -24,7 +24,7 @@ const Main = ({publicKey, resetAccount}) => {
     }
     else if(IsSendToken)
     {
-      return(<SendToken setIsSendToken={setIsSendToken} token={tokenSel}/>)
+      return(<SendToken setIsSendToken={setIsSendToken} token={tokenSel} rpcUrl={url}/>)
     }
     else
     {
