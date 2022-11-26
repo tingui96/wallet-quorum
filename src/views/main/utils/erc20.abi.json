@@ -202,21 +202,35 @@
         "inputs": [
             {
                 "indexed": true,
-                "name": "from",
-                "type": "address"
-            },
-            {
-                "indexed": true,
                 "name": "to",
                 "type": "address"
             },
             {
                 "indexed": false,
-                "name": "value",
+                "name": "tokens",
                 "type": "uint256"
             }
         ],
-        "name": "Transfer",
-        "type": "event"
+        "name": "transfer",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "name": "_owner",
+                "type": "address"
+            }
+        ],
+        "name": "transferPendingToApprove",
+        "outputs": [
+            {
+                "name": "balance",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
     }
 ]

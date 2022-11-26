@@ -20,7 +20,6 @@ const Setup = ({setSecret, setPublicKey, setHasSaved, setHasPass}) => {
         const wallet = web3.eth.accounts.create(string);
         const secret = wallet.privateKey;
         const publicKey = wallet.address;
-        //console.log(secret);
         setSecret(secret);
         setPublicKey(publicKey);
         const encryptPrivateKey = web3.eth.accounts.encrypt(secret,password);

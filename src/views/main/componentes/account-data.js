@@ -1,17 +1,18 @@
 import React, { useEffect, useState} from "react";
 import {
     Text,InputGroup,
-    InputRightElement,
-    Button,useDisclosure,
+    InputRightElement,Input,Box,
+    Button,useDisclosure, useClipboard,
     Modal,ModalFooter,ModalHeader,ModalBody, ModalCloseButton,ModalContent,
     Table, Thead, Tbody, Tfoot,Tr,Th,Td,TableContainer, Tooltip
 } from '@chakra-ui/react'
 import QRCode from "react-qr-code";
-import { ArrowRightIcon } from "@chakra-ui/icons";
+import { ArrowRightIcon,BellIcon } from "@chakra-ui/icons";
 
 
-const AccountData = ({publicKey, list,setIsSendToken,setTokenSel}) => {
+const AccountData = ({publicKey, list,setIsSendToken,setTokenSel,setIsPending}) => {
     //const MINUTE_MS = 5000;
+    const {copied, onCopy ,hasCopied} = useClipboard(publicKey)
     const { isOpen, onOpen, onClose } = useDisclosure();
     const saveList = () => {
         localStorage.setItem('tokenList',JSON.stringify(list));
@@ -35,6 +36,10 @@ const AccountData = ({publicKey, list,setIsSendToken,setTokenSel}) => {
         setTokenSel(token)
         setIsSendToken(true);
     }
+    const goPending = () =>
+    {
+      setIsPending(true)
+    }
    return (
        <>
        <InputGroup alignItems="center">
@@ -42,19 +47,31 @@ const AccountData = ({publicKey, list,setIsSendToken,setTokenSel}) => {
                Datos de la Cuenta
            </Text>
            <InputRightElement width="7rem">
-               <Button h="1.75rem"  colorScheme="telegram" size="sm"
+                <BellIcon w={6} h={6} mr={5} onClick={goPending}/>
+               <Button h="1.75rem"  colorScheme="telegram" size="sm" mr={2}
                    onClick={onOpen}>Recibir</Button>
                <Modal isCentered isOpen={isOpen} onClose={onClose}>
                  <ModalContent>
-                   <ModalHeader>Escanee este codigo para recibir</ModalHeader>
+                   <ModalHeader>Escanee este código para recibir</ModalHeader>
                    <ModalCloseButton />
-                   <ModalBody>
-                       <InputGroup marginLeft={10}>
+                   <ModalBody >
+                       <InputGroup  marginLeft={12}>
                            <QRCode value={publicKey} size={256} bgColor="#282c34" fgColor="#fff" level="H" />
+                       </InputGroup>
+                       <Text textAlign="center"fontSize="xl" mt={5}>O copie la direccion a continuación:</Text>
+                       <InputGroup alignItems="center">
+                       <Box display="flex" alignItems="center" mt={1}>
+                          <Input readOnly value={publicKey} ml={8} pr="7rem" size="sm"/>
+                          <InputRightElement width="4.5rem" mr={5} >
+                        <Button h="2rem" onClick={onCopy}>
+                            { !hasCopied ? 'Copiar':'Copiado'}
+                        </Button>
+                        </InputRightElement>
+                        </Box>
                        </InputGroup>
                    </ModalBody>
                    <ModalFooter>
-                     <Button onClick={onClose}>Close</Button>
+                     <Button colorScheme="red" onClick={onClose}>Close</Button>
                    </ModalFooter>
                  </ModalContent>
                </Modal>

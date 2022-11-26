@@ -6,6 +6,7 @@ import React, { useState } from 'react'
 import QRSCANNER from './QRSCANNER';
 import { ArrowRightIcon } from "@chakra-ui/icons";
 import Erc20 from "../utils/erc20.abi.json"
+import { BigNumber } from 'ethers';
 
 const SendToken = ({setIsSendToken, token, rpcUrl}) =>
 {
@@ -45,42 +46,86 @@ const SendToken = ({setIsSendToken, token, rpcUrl}) =>
     }
     const enviar = async() =>
     {
-
-        const provider = rpcUrl;
-        const Web3 = require('web3');
-        const Web3Client = new Web3(new Web3.providers.HttpProvider(provider));
-        const contract = new Web3Client.eth.Contract(Erc20, token.contract);
-
-        await contract.methods.Transfer()
-
+        console.log(rpcUrl);
+        
+        try{
+          const provider = rpcUrl;
+          const Web3 = require('web3');
+          const value = Web3.utils.toBN(cantidad);
+          const Web3Client = new Web3(new Web3.providers.HttpProvider(provider));
+          const account = Web3Client.eth.accounts.decrypt(JSON.parse(localStorage.getItem('secret')),pass);
+          const contract = new Web3Client.eth.Contract(Erc20, token.contract,{from:account.address});
+          console.log(account.address)
+          const estimateGas = await Web3Client.eth.estimateGas({
+            value: '0x0', // Only tokens
+            data: contract.methods.transfer(fromTo,value).encodeABI(),
+            from: account.address,
+            to: fromTo
+            });
+            console.log(estimateGas)
+            const transactionObject  = {
+              value:'0x0',
+              data:contract.methods.transfer(fromTo,value).encodeABI(),
+            from: account.address,
+            to: fromTo,
+            gas:Web3Client.utils.toHex(Math.round(estimateGas * 1.10)),
+            gasLimit:Web3Client.utils.toHex(Math.round(estimateGas * 1.10)),
+            
+          }
+          //Sing
+          const signText = await Web3Client.eth.accounts.signTransaction(transactionObject, account.privateKey);
+          //Send Transaction
+          const reciep = await Web3Client.eth.sendSignedTransaction(signText.rawTransaction);
+          onClose()
+          toast({
+            title: 'Success',
+            description: reciep.transactionHash,
+            status: 'success',
+            duration: 9000,
+            isClosable: true
+          })
+    
+    
+        }
+        catch (err){
+          onClose()
+          toast({
+            title: 'Error',
+            description: err.message,
+            status: 'error',
+            duration: 9000,
+            isClosable: true
+          })
+        }
     }
         return(
         <>
+        
         <Text mb='8px' as="b" fontSize="3xl"> Enviar {token.symbol} a:</Text>
         {/*<QRSCANNER/>*/}
-        
-        <Text mb='8px' as="b">Direccion a enviar</Text>        
-          <Input type="text"  value={fromTo} onChange={handleAddress}/>
+        <Text mb='8px' as="b">Direccion a enviar</Text>
+          <Input width="20rem" type="text"  value={fromTo} onChange={handleAddress}/>
           <Text mb='8px' as="b" mt={5}> Max: {token.balance}</Text>
-          <Input type="number" width={200} value={cantidad} onChange={handleCantidad}></Input>
+          <Input type="number" width="8rem" value={cantidad} onChange={handleCantidad}></Input>
           <Button mt={5} width={100} colorScheme="green" onClick={onOpen}><ArrowRightIcon/></Button>
           <Modal isOpen={isOpen} onClose={onClose}>
                   <ModalContent>
-                    <ModalHeader>Escriba la contrasena de sus fondos</ModalHeader>
+                    <ModalHeader>Escriba la contraseña de sus fondos</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
                     <FormControl>
-                        <FormLabel>Contrasena</FormLabel>
+                        <FormLabel>Contraseña</FormLabel>
                         <Input type="password" placeholder='Password' onChange={handlePasswordChange}/>
                     </FormControl>
                     </ModalBody>
                     <ModalFooter>
-                      <Button size="sm" colorScheme="green" onClick={enviar}> Agregar</Button>  
+                      <Button size="sm" colorScheme="green" onClick={enviar}> Aceptar</Button>  
                       <Button size="sm" marginLeft={5} onClick={onClose}>Close</Button>
                     </ModalFooter>
                   </ModalContent>
                 </Modal>
-        <Button mt={1} colorScheme="red" onClick={goBack}>Cancelar</Button>
+               
+        <Button mt={2} colorScheme="red" onClick={goBack}>Cancelar</Button>
         </>
     )
 }
