@@ -1,6 +1,6 @@
 import { Button, Input, InputGroup, InputRightElement,Text, useToast,
     Modal, ModalBody, ModalContent, ModalHeader,ModalCloseButton, ModalFooter,
-  FormControl, FormLabel, useDisclosure }
+  FormControl, FormLabel, useDisclosure, Spinner }
      from '@chakra-ui/react';
 import React, { useState } from 'react'
 import QRSCANNER from './QRSCANNER';
@@ -12,7 +12,8 @@ import getBalance from "../utils/getBalance"
 const SendToken = ({setIsSendToken, token, rpcUrl, list, setList, publicKey}) =>
 {
     const toast = useToast();
-    const [fromTo,setFromTo] = useState('')
+    const [isLoad,setIsLoad] = useState(false);
+    const [fromTo,setFromTo] = useState('');
     const [cantidad,setCantidad] = useState(0);
     const [pass,setPass] = useState("");
     const [newlist,setnewlist] = useState([]) ;
@@ -48,7 +49,7 @@ const SendToken = ({setIsSendToken, token, rpcUrl, list, setList, publicKey}) =>
     }
     const enviar = async() =>
     {
-        console.log(rpcUrl);
+        setIsLoad(true);
         
         try{
           const provider = rpcUrl;
@@ -88,13 +89,15 @@ const SendToken = ({setIsSendToken, token, rpcUrl, list, setList, publicKey}) =>
             isClosable: true
           })
           setIsSendToken(false);
-          
-            //setList(newlist)
-          
-          console.log(newlist)
-          //localStorage.setItem('tokenList',JSON.stringify(newlist));
-    
-    
+          var newList = await Promise.all(list.map(
+            async (element) => 
+            {
+              return await getBalance(rpcUrl,element,publicKey)
+            }
+          ))
+          setList(newList);
+          localStorage.setItem('tokenList',JSON.stringify(list));
+          setIsLoad(false);
         }
         catch (err){
           onClose()
@@ -106,6 +109,7 @@ const SendToken = ({setIsSendToken, token, rpcUrl, list, setList, publicKey}) =>
             duration: 9000,
             isClosable: true
           })
+          setIsLoad(false);
         }
     }
         return(
@@ -129,8 +133,11 @@ const SendToken = ({setIsSendToken, token, rpcUrl, list, setList, publicKey}) =>
                     </FormControl>
                     </ModalBody>
                     <ModalFooter>
-                      <Button size="sm" colorScheme="green" onClick={enviar}> Aceptar</Button>  
+                      { 
+                        !isLoad ? <Button size="sm" colorScheme="green" onClick={enviar}> Aceptar</Button> : <Spinner/>
+                      }
                       <Button size="sm" marginLeft={5} onClick={onClose}>Close</Button>
+                      
                     </ModalFooter>
                   </ModalContent>
                 </Modal>
