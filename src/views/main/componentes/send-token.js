@@ -7,13 +7,15 @@ import QRSCANNER from './QRSCANNER';
 import { ArrowRightIcon } from "@chakra-ui/icons";
 import Erc20 from "../utils/erc20.abi.json"
 import { BigNumber } from 'ethers';
+import getBalance from "../utils/getBalance"
 
-const SendToken = ({setIsSendToken, token, rpcUrl}) =>
+const SendToken = ({setIsSendToken, token, rpcUrl, list, setList, publicKey}) =>
 {
     const toast = useToast();
     const [fromTo,setFromTo] = useState('')
     const [cantidad,setCantidad] = useState(0);
     const [pass,setPass] = useState("");
+    const [newlist,setnewlist] = useState([]) ;
     const { isOpen, onOpen, onClose } = useDisclosure();
     const goBack = () =>
     {
@@ -54,8 +56,9 @@ const SendToken = ({setIsSendToken, token, rpcUrl}) =>
           const value = Web3.utils.toBN(cantidad);
           const Web3Client = new Web3(new Web3.providers.HttpProvider(provider));
           const account = Web3Client.eth.accounts.decrypt(JSON.parse(localStorage.getItem('secret')),pass);
+          console.log(token.contract);
           const contract = new Web3Client.eth.Contract(Erc20, token.contract,{from:account.address});
-          console.log(account.address)
+          console.log(account.address);
           const estimateGas = await Web3Client.eth.estimateGas({
             value: '0x0', // Only tokens
             data: contract.methods.transfer(fromTo,value).encodeABI(),
@@ -67,9 +70,9 @@ const SendToken = ({setIsSendToken, token, rpcUrl}) =>
               value:'0x0',
               data:contract.methods.transfer(fromTo,value).encodeABI(),
             from: account.address,
-            to: fromTo,
+            to: token.contract,
             gas:Web3Client.utils.toHex(Math.round(estimateGas * 1.10)),
-            gasLimit:Web3Client.utils.toHex(Math.round(estimateGas * 1.10)),
+            gasLimit:Web3Client.utils.toHex(210000),
             
           }
           //Sing
@@ -84,11 +87,18 @@ const SendToken = ({setIsSendToken, token, rpcUrl}) =>
             duration: 9000,
             isClosable: true
           })
+          setIsSendToken(false);
+          
+            //setList(newlist)
+          
+          console.log(newlist)
+          //localStorage.setItem('tokenList',JSON.stringify(newlist));
     
     
         }
         catch (err){
           onClose()
+          console.log(err.message)
           toast({
             title: 'Error',
             description: err.message,
