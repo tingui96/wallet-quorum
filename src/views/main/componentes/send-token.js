@@ -1,4 +1,4 @@
-import { Button, Input, InputGroup, InputRightElement,Text, useToast,
+import { Button, Input,Text, useToast,
     Modal, ModalBody, ModalContent, ModalHeader,ModalCloseButton, ModalFooter,
   FormControl, FormLabel, useDisclosure, Spinner }
      from '@chakra-ui/react';
@@ -6,7 +6,6 @@ import React, { useState } from 'react'
 import QRSCANNER from './QRSCANNER';
 import { ArrowRightIcon } from "@chakra-ui/icons";
 import Erc20 from "../utils/erc20.abi.json"
-import { BigNumber } from 'ethers';
 import getBalance from "../utils/getBalance"
 
 const SendToken = ({setIsSendToken, token, rpcUrl, list, setList, publicKey}) =>
@@ -16,7 +15,6 @@ const SendToken = ({setIsSendToken, token, rpcUrl, list, setList, publicKey}) =>
     const [fromTo,setFromTo] = useState('');
     const [cantidad,setCantidad] = useState(0);
     const [pass,setPass] = useState("");
-    const [newlist,setnewlist] = useState([]) ;
     const { isOpen, onOpen, onClose } = useDisclosure();
     const goBack = () =>
     {
@@ -134,7 +132,7 @@ const SendToken = ({setIsSendToken, token, rpcUrl, list, setList, publicKey}) =>
                     </ModalBody>
                     <ModalFooter>
                       { 
-                        !isLoad ? <Button size="sm" colorScheme="green" onClick={enviar}> Aceptar</Button> : <Spinner/>
+                        !isLoad ? <Button size="sm" colorScheme="green" onClick={enviar}> Aceptar</Button> : <Spinner color='red.500'/>
                       }
                       <Button size="sm" marginLeft={5} onClick={onClose}>Close</Button>
                       
