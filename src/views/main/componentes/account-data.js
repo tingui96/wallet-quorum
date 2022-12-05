@@ -19,18 +19,6 @@ const AccountData = ({publicKey, list,setIsSendToken,setTokenSel,setIsPending}) 
     };
     useEffect(saveList,[list]);
 
- //   const onLoad = async() => {
- //     console.log(1);
-//
-  //    var newList = await Promise.all(list.map(
-  //      async (element) => 
-  //      {
-  //        return await getBalance(rpcUrl,element,publicKey)
-  //      }
-  //    ))
-  //    setList(newList);
-  //  }
-  //  setInterval(onLoad,MINUTE_MS);
     const goSendToken = (token) =>
     {
         setTokenSel(token)

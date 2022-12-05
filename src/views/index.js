@@ -27,14 +27,13 @@ const Views = () => {
     //Condiciones de navegacion
     if(!secret && !publicKey)
     {
-
-        return <Setup setSecret={setSecret} setPublicKey ={setPublicKey} setHasSaved={setHasSaved} setHasPass={setHasPass}/>;
+        return <Setup setSecret={setSecret} setPublicKey ={setPublicKey}
+                     setHasSaved={setHasSaved} setHasPass={setHasPass}/>;
     }
     else if(!hasSaved)
     {
-        
-        console.log(secret)
-        return <Warning secret={secret} resetAccount={resetAccount} setHasSaved={setHasSaved} />;
+        return <Warning secret={secret} resetAccount={resetAccount} 
+                setHasSaved={setHasSaved} />;
     }
     else
     {

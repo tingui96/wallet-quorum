@@ -7,6 +7,7 @@ import AddToken from "./componentes/add-token";
 import SendToken from "./componentes/send-token";
 import PendingApprove from "./componentes/pending-approve";
 
+
 const Main = ({publicKey, resetAccount}) => {
 
     const [url, setUrl] = useState(localStorage.getItem('url'));
@@ -14,7 +15,9 @@ const Main = ({publicKey, resetAccount}) => {
     const [IsPending,setIsPending] = useState(false);
     const [tokenSel,setTokenSel] = useState('');
     const [list,setList] = useState(JSON.parse(localStorage.getItem('tokenList')));
+    
     if(list===null){setList([])}
+    
     const [config,setConfig] = useState(false);
 
     const onConfig = () => {
@@ -26,7 +29,7 @@ const Main = ({publicKey, resetAccount}) => {
     }
     else if(IsSendToken)
     {
-      return(<SendToken setIsSendToken={setIsSendToken} token={tokenSel} rpcUrl={url}/>)
+      return(<SendToken setIsSendToken={setIsSendToken} token={tokenSel} rpcUrl={url} list={list} setList={setList} publicKey={publicKey}/>)
     }
     else if(IsPending)
     {
