@@ -84,12 +84,6 @@ const AccountData = ({publicKey, list,setIsSendToken,setTokenSel,setIsPending}) 
                      <Td ><Tooltip label={"Send ".concat(element.symbol)}><ArrowRightIcon /></Tooltip></Td>
                    </Tr> ))}
          </Tbody>
-         <Tfoot>
-           <Tr>
-             <Th>To convert</Th>
-             <Th>into</Th>
-           </Tr>
-         </Tfoot>
        </Table>
        </TableContainer>
        </InputGroup>

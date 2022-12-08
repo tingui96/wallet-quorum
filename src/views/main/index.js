@@ -33,7 +33,14 @@ const Main = ({publicKey, resetAccount}) => {
     }
     else if(IsPending)
     {
-       return(<PendingApprove publicKey={publicKey} list={list} rpcUrl={url} setIsPending={setIsPending}/>)
+       return(
+        <Box display="flex" justifyContent="center" width="100%"
+                  maxWidth="600px" borderWidth="1px" p={6}>
+          <Stack width="100%" maxWidth="600px" justifyContent="center">
+            <PendingApprove publicKey={publicKey} list={list} setList={setList} rpcUrl={url} setIsPending={setIsPending}/>
+          </Stack>
+        </Box>
+       )
     }
     else
     {

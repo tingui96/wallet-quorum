@@ -25,7 +25,7 @@ class QRSCANNER extends React.Component {
   }
   render()
   {
-    return(<div id="reader" style="width: 500px"></div>);
+    return(<div id="reader" width="500px"></div>);
   }
 }
 export default QRSCANNER;

@@ -1,13 +1,17 @@
-import Erc20 from './erc20.abi.json';
+import Erc20 from './mederc20.abi.json';
 
-async function pendingToApprove(rpc,token,publicKey)
+async function approveOrReject(rpc,token,sender,value,bool)
 {
   const Web3 = require('web3');
   const Web3Client = new Web3(new Web3.providers.HttpProvider(rpc));
   const contract = new Web3Client.eth.Contract(Erc20, token.contract);
-  var isPending = []
-  await contract.methods.approve(publicKey).call()
-          .then(data => {isPending.concat(data)});
-  return isPending; 
+  if(bool)
+  {
+      return await contract.methods.approveTransfer(sender,value).call();
+  }
+  else
+  {
+      return await contract.methods.rejectTransfer(sender,value).call();
+  }
 };
-export default pendingToApprove;
+export default approveOrReject;
