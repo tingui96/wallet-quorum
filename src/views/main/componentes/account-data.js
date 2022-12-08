@@ -4,13 +4,13 @@ import {
     InputRightElement,Input,Box,
     Button,useDisclosure, useClipboard,
     Modal,ModalFooter,ModalHeader,ModalBody, ModalCloseButton,ModalContent,
-    Table, Thead, Tbody, Tfoot,Tr,Th,Td,TableContainer, Tooltip
+    Table, Thead, Tbody,Tr,Th,Td,TableContainer, Tooltip
 } from '@chakra-ui/react'
 import QRCode from "react-qr-code";
 import { ArrowRightIcon,BellIcon } from "@chakra-ui/icons";
 
 
-const AccountData = ({publicKey, list,setIsSendToken,setTokenSel,setIsPending}) => {
+const AccountData = ({publicKey, list,setIsSendToken,setTokenSel,setIsPending, pending}) => {
     //const MINUTE_MS = 5000;
     const {copied, onCopy ,hasCopied} = useClipboard(publicKey)
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -35,7 +35,10 @@ const AccountData = ({publicKey, list,setIsSendToken,setTokenSel,setIsPending}) 
                Datos de la Cuenta
            </Text>
            <InputRightElement width="7rem">
-                <BellIcon w={6} h={6} mr={5} onClick={goPending}/>
+                { 
+                  !pending ? <BellIcon w={6} h={6} mr={5}/> 
+                  : <BellIcon color="red.500" w={6} h={6} mr={5} onClick={goPending}/>
+                }
                <Button h="1.75rem"  colorScheme="telegram" size="sm" mr={2}
                    onClick={onOpen}>Recibir</Button>
                <Modal isCentered isOpen={isOpen} onClose={onClose}>

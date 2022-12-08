@@ -6,7 +6,7 @@ import Configuracion from "./configuracion";
 import AddToken from "./componentes/add-token";
 import SendToken from "./componentes/send-token";
 import PendingApprove from "./componentes/pending-approve";
-
+import pendingToApprove from "./utils/pendingToApprove";
 
 const Main = ({publicKey, resetAccount}) => {
 
@@ -23,6 +23,22 @@ const Main = ({publicKey, resetAccount}) => {
     const onConfig = () => {
         setConfig(true);
     };
+    const [pending,setPending] = useState([]);
+    const listar = async () => {
+        //await approveOrReject(rpcUrl,list[0],'0x131de47CD063C4cD9faad0D9F5c0F6C426f30bBc',500,true);
+        var newList = await Promise.all(list.map(
+            async (element) => 
+            {
+              return { 
+                        token: element,
+                        senders: await pendingToApprove(url,element,publicKey)
+                      }
+            }
+          ))
+          setPending(newList);
+        }
+    setInterval(listar,5000);
+
     if(config)
     {
       return(<Configuracion url={url} setUrl={setUrl} setConfig={setConfig}/>);
@@ -37,7 +53,7 @@ const Main = ({publicKey, resetAccount}) => {
         <Box display="flex" justifyContent="center" width="100%"
                   maxWidth="600px" borderWidth="1px" p={6}>
           <Stack width="100%" maxWidth="600px" justifyContent="center">
-            <PendingApprove publicKey={publicKey} list={list} setList={setList} rpcUrl={url} setIsPending={setIsPending}/>
+            <PendingApprove publicKey={publicKey} pending={pending} rpcUrl={url} setIsPending={setIsPending}/>
           </Stack>
         </Box>
        )
@@ -50,7 +66,7 @@ const Main = ({publicKey, resetAccount}) => {
                   maxWidth="600px" borderWidth="1px" p={6}>
                   <Stack width="100%" maxWidth="600px" justifyContent="center">
                     {/*Datos de la cuenta*/}
-                    <AccountData publicKey={publicKey} list={list} setIsSendToken={setIsSendToken} setTokenSel={setTokenSel} setIsPending={setIsPending}/>
+                    <AccountData publicKey={publicKey} list={list} setIsSendToken={setIsSendToken} setTokenSel={setTokenSel} setIsPending={setIsPending} pending={pending.length>0}/>
                     {/*Transferencias */}
                     {/*Balance */}
 

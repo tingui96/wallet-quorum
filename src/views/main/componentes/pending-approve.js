@@ -1,29 +1,8 @@
-import React, {useEffect, useState} from "react";
-import { Button ,useDisclosure,FormControl,FormLabel,Input,useToast,
-    Modal,ModalFooter,ModalHeader,ModalBody, ModalCloseButton,ModalContent,
-  InputGroup,TableContainer,Table,Thead,Tbody,Tr,Th,Td,Tfoot,Box,Stack} from "@chakra-ui/react";
-import pendingToApprove from "../utils/pendingToApprove";
-import getAllValue from "../utils/getAllValue";
-import approveOrReject from "../utils/approveOrReject";
-import getBalance from "../utils/getBalance";
+import React from "react";
+import { Button, InputGroup,TableContainer,Table,Thead,Tbody,Tr,Th,Td} from "@chakra-ui/react";
 
-const PendingApprove = ({publicKey,list,rpcUrl,setIsPending}) =>
+const PendingApprove = ({publicKey,pending,rpcUrl,setIsPending}) =>
 {
-    const [pending,setPending] = useState([]);
-    const listar = async () => {
-        //await approveOrReject(rpcUrl,list[0],'0x131de47CD063C4cD9faad0D9F5c0F6C426f30bBc',500,true);
-        var newList = await Promise.all(list.map(
-            async (element) => 
-            {
-              return { 
-                        token: element,
-                        senders: await pendingToApprove(rpcUrl,element,publicKey)
-                      }
-            }
-          ))
-          setPending(newList);
-        }
-    listar();
     const goBack = () =>
     {
         setIsPending(false);
