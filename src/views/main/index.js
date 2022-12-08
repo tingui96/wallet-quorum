@@ -7,6 +7,7 @@ import AddToken from "./componentes/add-token";
 import SendToken from "./componentes/send-token";
 import PendingApprove from "./componentes/pending-approve";
 import pendingToApprove from "./utils/pendingToApprove";
+import getBalance from "./utils/getBalance";
 
 const Main = ({publicKey, resetAccount}) => {
 
@@ -38,7 +39,17 @@ const Main = ({publicKey, resetAccount}) => {
           setPending(newList);
         }
     setInterval(listar,5000);
-
+    const actualizar = async () =>
+    {
+      var newList2 = await Promise.all(list?.map(
+        async (element) => 
+        {
+          return await getBalance(url,element,publicKey)
+        }
+      ))
+      setList(newList2);
+    }
+    setInterval(actualizar,5000);
     if(config)
     {
       return(<Configuracion url={url} setUrl={setUrl} setConfig={setConfig}/>);
@@ -53,7 +64,7 @@ const Main = ({publicKey, resetAccount}) => {
         <Box display="flex" justifyContent="center" width="100%"
                   maxWidth="600px" borderWidth="1px" p={6}>
           <Stack width="100%" maxWidth="600px" justifyContent="center">
-            <PendingApprove publicKey={publicKey} pending={pending} rpcUrl={url} setIsPending={setIsPending}/>
+            <PendingApprove publicKey={publicKey} pending={pending} rpcUrl={url} setIsPending={setIsPending} list={list} setList={setList}/>
           </Stack>
         </Box>
        )

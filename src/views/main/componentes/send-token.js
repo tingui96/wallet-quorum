@@ -5,7 +5,7 @@ import { Button, Input,Text, useToast,
 import React, { useState } from 'react'
 import QRSCANNER from './QRSCANNER';
 import { ArrowRightIcon } from "@chakra-ui/icons";
-import Erc20 from "../utils/erc20.abi.json"
+import Erc20 from "../utils/mederc20.abi.json"
 import getBalance from "../utils/getBalance"
 
 const SendToken = ({setIsSendToken, token, rpcUrl, list, setList, publicKey}) =>

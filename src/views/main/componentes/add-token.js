@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import { Button ,useDisclosure,FormControl,FormLabel,Input,useToast,
     Modal,ModalFooter,ModalHeader,ModalBody, ModalCloseButton,ModalContent} from "@chakra-ui/react";
-import Erc20 from '../utils/erc20.abi.json';
+import Erc20 from '../utils/mederc20.abi.json';
 
 const AddToken = ({list,setList,rpcUrl,publicKey}) => {
 

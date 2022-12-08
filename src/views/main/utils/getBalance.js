@@ -1,4 +1,4 @@
-import Erc20 from './erc20.abi.json';
+import Erc20 from './mederc20.abi.json';
 
 async function getBalance(rpc,token,publicKey)
 {
