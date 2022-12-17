@@ -18,7 +18,10 @@ const AccountData = ({publicKey, list,setIsSendToken,setTokenSel,setIsPending, p
         localStorage.setItem('tokenList',JSON.stringify(list));
     };
     useEffect(saveList,[list]);
-
+    const savePending = () => {
+      localStorage.setItem('pendingToApprove',JSON.stringify(pending));
+    };
+    useEffect(savePending,[pending]);
     const goSendToken = (token) =>
     {
         setTokenSel(token)
@@ -28,7 +31,6 @@ const AccountData = ({publicKey, list,setIsSendToken,setTokenSel,setIsPending, p
     {
       setIsPending(true)
     }
-
    return (
        <>
        <InputGroup alignItems="center">
