@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useEffect, useState} from "react";
 import AccountData from "./componentes/account-data"
 import { Button,Box,Stack,Divider,Text} from "@chakra-ui/react";
 import {SettingsIcon} from "@chakra-ui/icons";
@@ -25,31 +25,35 @@ const Main = ({publicKey, resetAccount}) => {
         setConfig(true);
     };
     const [pending,setPending] = useState([]);
-    const listar = async () => {
-        //await approveOrReject(rpcUrl,list[0],'0x131de47CD063C4cD9faad0D9F5c0F6C426f30bBc',500,true);
-        var newList = await Promise.all(list.map(
-            async (element) => 
-            {
-              return { 
-                        token: element,
-                        senders: await pendingToApprove(url,element,publicKey)
-                      }
-            }
-          ))
-          setPending(newList);
-        }
-    setInterval(listar,5000);
-    const actualizar = async () =>
+    
+    useEffect(() => {
+      async function listar(rpcUrl,publicKey,tokens){
+        var newList = await Promise.all(tokens?.map(
+          async (element) => 
+          {
+            var a = {token:element, senders:[]};
+            await pendingToApprove(rpcUrl,element,publicKey).then((data)=> a.senders=data);
+            return a
+          }))
+        setPending(newList.filter(x=>x.senders.length>0));
+      }
+      listar(url,publicKey,list);
+    },[]);
+
+    
+    useEffect(()=>
+     async function actualizarBalances()
     {
-      var newList2 = await Promise.all(list?.map(
+      var newList = await Promise.all(list?.map(
         async (element) => 
         {
           return await getBalance(url,element,publicKey)
         }
       ))
-      setList(newList2);
+      setList(newList);
     }
-    setInterval(actualizar,5000);
+    ,[]);
+    
     if(config)
     {
       return(<Configuracion url={url} setUrl={setUrl} setConfig={setConfig}/>);
@@ -64,7 +68,7 @@ const Main = ({publicKey, resetAccount}) => {
         <Box display="flex" justifyContent="center" width="100%"
                   maxWidth="600px" borderWidth="1px" p={6}>
           <Stack width="100%" maxWidth="600px" justifyContent="center">
-            <PendingApprove publicKey={publicKey} pending={pending} rpcUrl={url} setIsPending={setIsPending} list={list} setList={setList}/>
+            <PendingApprove publicKey={publicKey} pending={pending} setPending={setPending} rpcUrl={url} setIsPending={setIsPending} list={list} setList={setList}/>
           </Stack>
         </Box>
        )

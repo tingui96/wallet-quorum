@@ -5,8 +5,8 @@ import { Button, Input,Text, useToast,
 import React, { useState } from 'react'
 import QRSCANNER from './QRSCANNER';
 import { ArrowRightIcon } from "@chakra-ui/icons";
-import Erc20 from "../utils/mederc20.abi.json"
-import getBalance from "../utils/getBalance"
+import actualizarBalance from '../utils/actualizar-balances';
+import transfer from '../utils/trasfer';
 
 const SendToken = ({setIsSendToken, token, rpcUrl, list, setList, publicKey}) =>
 {
@@ -48,54 +48,20 @@ const SendToken = ({setIsSendToken, token, rpcUrl, list, setList, publicKey}) =>
     const enviar = async() =>
     {
         setIsLoad(true);
-        
-        try{
-          const provider = rpcUrl;
-          const Web3 = require('web3');
-          const value = Web3.utils.toBN(cantidad);
-          const Web3Client = new Web3(new Web3.providers.HttpProvider(provider));
-          const account = Web3Client.eth.accounts.decrypt(JSON.parse(localStorage.getItem('secret')),pass);
-          console.log(token.contract);
-          const contract = new Web3Client.eth.Contract(Erc20, token.contract,{from:account.address});
-          console.log(account.address);
-          const estimateGas = await Web3Client.eth.estimateGas({
-            value: '0x0', // Only tokens
-            data: contract.methods.transfer(fromTo,value).encodeABI(),
-            from: account.address,
-            to: fromTo
-            });
-            console.log(estimateGas)
-            const transactionObject  = {
-              value:'0x0',
-              data:contract.methods.transfer(fromTo,value).encodeABI(),
-            from: account.address,
-            to: token.contract,
-            gas:Web3Client.utils.toHex(Math.round(estimateGas * 1.10)),
-            gasLimit:Web3Client.utils.toHex(210000),
-            
-          }
-          //Sing
-          const signText = await Web3Client.eth.accounts.signTransaction(transactionObject, account.privateKey);
-          //Send Transaction
-          const reciep = await Web3Client.eth.sendSignedTransaction(signText.rawTransaction);
-          onClose()
-          toast({
-            title: 'Success',
-            description: reciep.transactionHash,
-            status: 'success',
-            duration: 9000,
-            isClosable: true
-          })
-          setIsSendToken(false);
-          var newList = await Promise.all(list.map(
-            async (element) => 
-            {
-              return await getBalance(rpcUrl,element,publicKey)
-            }
-          ))
-          setList(newList);
-          localStorage.setItem('tokenList',JSON.stringify(list));
-          setIsLoad(false);
+        try
+        {
+            const reciep = await transfer(rpcUrl,token,cantidad,fromTo,pass);
+            onClose()
+            toast({
+              title: 'Success',
+              description: reciep.transactionHash,
+              status: 'success',
+              duration: 9000,
+              isClosable: true
+            })
+            setIsSendToken(false);
+            actualizarBalance(rpcUrl,publicKey,list,setList);
+            setIsLoad(false);
         }
         catch (err){
           onClose()

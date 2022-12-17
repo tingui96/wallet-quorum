@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, InputGroup,TableContainer,Table,Thead,Tbody,Tr,Th,Td} from "@chakra-ui/react";
 import ApproveOrReject from "./approve-reject";
 
-const PendingApprove = ({publicKey,pending,rpcUrl,setIsPending}) =>
+const PendingApprove = ({publicKey,pending,setPending,rpcUrl,setIsPending, list,setList}) =>
 {
     const [trasferSel,setTransferSel] = useState([]);
     const [isApproveOrReject,setIsApproveOrReject] = useState(false);
@@ -17,7 +17,7 @@ const PendingApprove = ({publicKey,pending,rpcUrl,setIsPending}) =>
     }
     if(isApproveOrReject)
     {
-      return <ApproveOrReject setIsApproveOrReject={setIsApproveOrReject} transferSel={trasferSel} rpcUrl={rpcUrl} publicKey={publicKey}/>
+      return <ApproveOrReject setIsPending={setIsPending} setIsApproveOrReject={setIsApproveOrReject} transferSel={trasferSel} rpcUrl={rpcUrl} publicKey={publicKey} setPending={setPending} list={list} setList={setList}/>
     }
     return(
         <>
